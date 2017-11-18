@@ -1,7 +1,7 @@
 // model
 var locations = [
     {
-        title: 'University of Montreal', 
+        title: 'Université de Montréal', 
         location: 
         {
             lat: 45.504543,
@@ -37,7 +37,7 @@ var locations = [
     },
 
     {
-        title: 'Collège LaSalle',
+        title: 'LaSalle College',
         location:
         {
             lat: 45.491504,

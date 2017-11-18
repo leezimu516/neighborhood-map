@@ -1,12 +1,10 @@
-
-
 // global variable
 var map;
 var markers = [];
 var marker;
 var largeInfowindow;
 var bounds;
-
+var wikiElem;
 // function to initialize the map
 function initMap() {
 
@@ -40,9 +38,12 @@ function initMap() {
         markers.push(marker);
 
         // add click listener
+        // marker.addListener('click', function() {
+        //     populateInfowindow(this, largeInfowindow);    
+        // });
+
         marker.addListener('click', function() {
-            populateInfowindow(this, largeInfowindow);
-            // console.log(this.title);
+            wikiInfo(this, largeInfowindow);    
         });
 
 
@@ -55,7 +56,40 @@ function initMap() {
 
 };
 
+// wiki info
+function wikiInfo(marker, infowindow) {
+    
+    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + marker.title + '&format=json&callback=wikiCallback';
+    var wikiRequestTimeout = setTimeout(function(){
+        wikiElem = "failed to get wikipedia resources";
+        createInfowindow(marker, infowindow);
+    }, 8000);
 
+    $.ajax({
+        url: wikiUrl,
+        dataType: "jsonp",
+        jsonp: "callback",
+        success: function( response ) {
+            var introduction = response[2][0];
+            wikiElem = 
+                "<h3>"+ marker.title +"</h3>" + 
+                "<h5>"+ introduction +"</h5>" + 
+                "<a href='https://en.wikipedia.org/wiki/" + marker.title +"'>Link to Wikipedia Page</a>";
+            
+            createInfowindow(marker, infowindow);
+            clearTimeout(wikiRequestTimeout);
+        }
+    });
+
+    
+}
+
+// open infowindow for wiki
+function createInfowindow(marker, infowindow) {
+    infowindow.setContent(wikiElem);
+    infowindow.open(map, marker);
+}
+//google street view
 function populateInfowindow(marker, infowindow) {
     if (infowindow.marker != marker) {
         // Clear the infowindow content to give the streetview time to load.
