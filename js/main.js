@@ -8,6 +8,7 @@ var locations = [
 // global variable
 var map;
 var markers = [];
+var marker;
 var largeInfowindow;
 var bounds;
 
@@ -24,10 +25,11 @@ function initMap() {
 
     // create the marker array
     for (var i = 0; i < locations.length; i++) {
+        
         var position = locations[i].location;
         var title = locations[i].title;
 
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
             position: position,
             map: map,
             title: title,
@@ -35,15 +37,26 @@ function initMap() {
             id: i
         });
         
-
-
+        // bind location with marker--bind the object created in vm
+        // locations[i].marker = marker;
+        vm.locationList()[i].marker = marker;
+        
+        
         markers.push(marker);
 
         // add click listener
         marker.addListener('click', function() {
             populateInfowindow(this, largeInfowindow);
+            // console.log(this.title);
         });
-    }      
+
+
+
+        
+    } 
+
+
+
 
 };
 
@@ -57,7 +70,7 @@ function populateInfowindow(marker, infowindow) {
 
         // make sure the marker property is clearly if the infowindow is closed
         infowindow.addListener('closeclick', function() {
-            infowindow.setMarker(null);
+            infowindow.marker = null;
         });
 
 
@@ -94,6 +107,16 @@ function populateInfowindow(marker, infowindow) {
     }
 }
 
+
+// list the location title for side bar
+var Location = function(data) {
+    this.title = ko.observable(data.title);
+    this.location = ko.observable(data.location);
+
+
+}
+
+
 // viewmodel
 var ViewModel = function() {
     var self = this;
@@ -103,15 +126,16 @@ var ViewModel = function() {
     locations.forEach(function(loc) {
         self.locationList.push(new Location(loc));
     });
-    
+
     this.currentLocation = ko.observable(this.locationList()[0]);
+    
+    self.showMarker = function(clickedLocation) {     
+        google.maps.event.trigger(clickedLocation.marker, 'click');
+        
 
+    }
     
 }
 
-// list the location title for side bar
-var Location = function(data) {
-    this.title = ko.observable(data.title);
-}
-
-ko.applyBindings(new ViewModel());
+var vm  = new ViewModel();
+ko.applyBindings(vm);

@@ -23,7 +23,7 @@
         <!-- Sidebar -->
         <div class="option-box">
             <ul id="location-list" data-bind="foreach:locationList">
-                <li data-bind="text:title"></li>     
+                <li id="show-marker" data-bind="text:title, click:$parent.showMarker"></li>     
             </ul>
         </div>
         <!-- end ofsidebar -->
