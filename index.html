@@ -22,9 +22,10 @@
 <body>
     <div class="layout">
         <!-- Sidebar -->
-        <div class="option-box">
+        <div class="option-box" id="side-bar">
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
             <ul id="location-list" data-bind="foreach:locationList">
-                <li id="show-marker" style="cursor:pointer" data-bind="text:title, click:$parent.showMarker"></li>     
+                <li id="show-marker" style="cursor:pointer" data-bind="text:title, click:$parent.showMarker"></li>
             </ul>
         </div>
         <!-- end ofsidebar -->
@@ -42,7 +43,7 @@
     <script src="js/lib/knockout-3.4.2.js"></script>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
-
+    <script src="js/sideBar.js"></script>
 
     <script async defer
      src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBMBCIDzTVn1pN_ec0m799kW00YdOzbknQ&libraries=geometry&callback=initMap">
