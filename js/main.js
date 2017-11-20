@@ -73,7 +73,7 @@ function wikiInfo(marker, infowindow) {
             var introduction = response[2][0];
             wikiElem = 
                 "<h3>"+ marker.title +"</h3>" + 
-                "<h5>"+ introduction +"</h5>" + 
+                "<h4>"+ introduction +"</h4>" + 
                 "<a href='https://en.wikipedia.org/wiki/" + marker.title +"'>Link to Wikipedia Page</a>";
             
             createInfowindow(marker, infowindow);
