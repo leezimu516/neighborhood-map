@@ -4,16 +4,11 @@
 <head>
 
     <meta charset="utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
-
-    <!-- Bootstrap core CSS -->
-    <!-- <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-
+    <title>Neighborhood Map</title>
     <!-- Custom styles for this template -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
 
@@ -23,8 +18,10 @@
     <div class="layout">
         <!-- Sidebar -->
         <div class="option-box" id="side-bar">
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
-            <ul id="location-list" data-bind="foreach:locationList">
+            <h1>Montreal University Tour</h1>
+            <input type="text" name="searchbox" placeholder="Search.." data-bind="textInput:query, valueUpdate: 'keyup'">
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>        
+            <ul id="location-list" data-bind="foreach:locationList, foreach:search">
                 <li id="show-marker" style="cursor:pointer" data-bind="text:title, click:$parent.showMarker"></li>
             </ul>
         </div>
@@ -39,7 +36,6 @@
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
-    <!-- <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
     <script src="js/lib/knockout-3.4.2.js"></script>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>

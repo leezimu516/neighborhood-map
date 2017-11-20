@@ -9,7 +9,7 @@ var wikiElem;
 function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
-        center: locations[0].location,
+        center: initLocations[0].location,
         zoom: 12
     });
 
@@ -17,10 +17,10 @@ function initMap() {
     bounds = new google.maps.LatLngBounds();
 
     // create the marker array
-    for (var i = 0; i < locations.length; i++) {
+    for (var i = 0; i < initLocations.length; i++) {
         
-        var position = locations[i].location;
-        var title = locations[i].title;
+        var position = initLocations[i].location;
+        var title = initLocations[i].title;
 
         marker = new google.maps.Marker({
             position: position,
@@ -31,8 +31,9 @@ function initMap() {
         });
         
         // bind location with marker--bind the object created in vm
-        // locations[i].marker = marker;
-        vm.locationList()[i].marker = marker;
+        initLocations[i].marker = marker;
+        // vm.locationList()[i].marker = marker;
+        
         
         
         markers.push(marker);
@@ -53,7 +54,7 @@ function initMap() {
 
 
 
-
+ko.applyBindings(new ViewModel());
 };
 
 // wiki info
@@ -152,7 +153,7 @@ var ViewModel = function() {
     
     this.locationList = ko.observableArray([]);
 
-    locations.forEach(function(loc) {
+    initLocations.forEach(function(loc) {
         self.locationList.push(new Location(loc));
     });
 
@@ -160,11 +161,28 @@ var ViewModel = function() {
     
     self.showMarker = function(clickedLocation) {     
         google.maps.event.trigger(clickedLocation.marker, 'click');
-        
-
     }
+
+    // search the listview and display corresponding marker
+    self.places = ko.observableArray(initLocations);
+    self.query = ko.observable('');
+    
+
+    this.search = ko.computed(function() {
+        return ko.utils.arrayFilter(self.places(), function(place) {
+            if (place.title.toLowerCase().indexOf(self.query().toLowerCase()) >= 0) {
+                place.marker.setVisible(true);
+                return true;
+            } else {
+                place.marker.setVisible(false);
+                return false;
+            }
+        });
+    });
+   
+
     
 }
 
-var vm  = new ViewModel();
-ko.applyBindings(vm);
+// var vm  = new ViewModel();
+// ko.applyBindings(vm);

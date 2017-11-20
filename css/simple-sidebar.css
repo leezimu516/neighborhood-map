@@ -85,6 +85,22 @@ h1 {
   height: 300px;
 }
 
+/*search bar*/
+input[type=text] {
+  position: relative;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  width: 100%;
+}
+
+
 
 /*@media only screen and (max-width: 1000px) {
   .option-box {
@@ -113,7 +129,9 @@ Show the link that contains should open and close the topnav (.icon) */
   .option-box a.icon {
     float: right;
     display: block;
-  }
+    position: absolute;
+    right: 0;
+    top: 0;
 
 }
 

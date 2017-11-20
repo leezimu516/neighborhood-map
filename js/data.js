@@ -1,5 +1,5 @@
 // model
-var locations = [
+var initLocations = [
     {
         title: 'Université de Montréal', 
         location: 
