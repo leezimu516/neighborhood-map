@@ -5,7 +5,9 @@ var marker;
 var largeInfowindow;
 var bounds;
 var wikiElem;
-// function to initialize the map
+
+
+
 function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
@@ -15,6 +17,10 @@ function initMap() {
 
     largeInfowindow = new google.maps.InfoWindow();
     bounds = new google.maps.LatLngBounds();
+
+    // style the marker icon
+    var defaultIcon = makeMarkerIcon('0091ff');
+    var highlightedIcon = makeMarkerIcon('ffff24');
 
     // create the marker array
     for (var i = 0; i < initLocations.length; i++) {
@@ -46,6 +52,15 @@ function initMap() {
         marker.addListener('click', function() {
             wikiInfo(this, largeInfowindow);    
         });
+
+        // two listener for changing the marker icon color
+        marker.addListener('mouseover', function() {
+            this.setIcon(highlightedIcon);
+        });
+
+        marker.addListener('mouseout', function() {
+            this.setIcon(defaultIcon);
+        })
 
 
 
@@ -138,11 +153,26 @@ function populateInfowindow(marker, infowindow) {
 }
 
 
+// This function takes in a COLOR, and then creates a new marker
+// icon of that color. The icon will be 21 px wide by 34 high, have an origin
+// of 0, 0 and be anchored at 10, 34).
+function makeMarkerIcon(markerColor) {
+    var markerImage = new google.maps.MarkerImage(
+      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+      '|40|_|%E2%80%A2',
+      new google.maps.Size(21, 34),
+      new google.maps.Point(0, 0),
+      new google.maps.Point(10, 34),
+      new google.maps.Size(21,34));
+
+    return markerImage;
+}
+
 // list the location title for side bar
 var Location = function(data) {
     this.title = ko.observable(data.title);
     this.location = ko.observable(data.location);
-
+    this.marker = data.marker;
 
 }
 
@@ -163,14 +193,15 @@ var ViewModel = function() {
         google.maps.event.trigger(clickedLocation.marker, 'click');
     }
 
+    
     // search the listview and display corresponding marker
     self.places = ko.observableArray(initLocations);
     self.query = ko.observable('');
-    
 
-    this.search = ko.computed(function() {
+    self.search = ko.computed(function() {
         return ko.utils.arrayFilter(self.places(), function(place) {
-            if (place.title.toLowerCase().indexOf(self.query().toLowerCase()) >= 0) {
+            var match = (place.title.toLowerCase().indexOf(self.query().toLowerCase()) >= 0);
+            if (match) {
                 place.marker.setVisible(true);
                 return true;
             } else {
@@ -179,9 +210,8 @@ var ViewModel = function() {
             }
         });
     });
-   
 
-    
+
 }
 
 // var vm  = new ViewModel();
