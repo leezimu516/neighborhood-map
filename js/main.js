@@ -9,7 +9,7 @@ var wikiElem;
 
 
 function initMap() {
-
+    
     map = new google.maps.Map(document.getElementById('map'), {
         center: initLocations[0].location,
         zoom: 12
@@ -54,21 +54,16 @@ function initMap() {
         });
 
         // two listener for changing the marker icon color
+
         marker.addListener('mouseover', function() {
             this.setIcon(highlightedIcon);
         });
 
         marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
-        })
-
-
-
-        
+        });
+   
     } 
-
-
-
 ko.applyBindings(new ViewModel());
 };
 
@@ -79,7 +74,7 @@ function wikiInfo(marker, infowindow) {
     var wikiRequestTimeout = setTimeout(function(){
         wikiElem = "failed to get wikipedia resources";
         createInfowindow(marker, infowindow);
-    }, 8000);
+    }, 1000);
 
     $.ajax({
         url: wikiUrl,
@@ -166,6 +161,12 @@ function makeMarkerIcon(markerColor) {
       new google.maps.Size(21,34));
 
     return markerImage;
+}
+
+
+// google map error handling
+function googleMapError() {
+    alert("something goes wrong with Google Maps");
 }
 
 // list the location title for side bar
