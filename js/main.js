@@ -32,9 +32,9 @@ function initMap() {
             position: position,
             map: map,
             title: title,
-            animation: google.maps.Animation.DROP,
             id: i
         });
+        marker.setIcon(defaultIcon);
         
         // bind location with marker--bind the object created in vm
         initLocations[i].marker = marker;
@@ -54,7 +54,6 @@ function initMap() {
         });
 
         // two listener for changing the marker icon color
-
         marker.addListener('mouseover', function() {
             this.setIcon(highlightedIcon);
         });
@@ -167,6 +166,13 @@ function makeMarkerIcon(markerColor) {
 // google map error handling
 function googleMapError() {
     alert("something goes wrong with Google Maps");
+    var mapDiv = document.getElementById('map');
+    var errorDiv = document.createElement('p');
+    errorDiv.innerHTML = "something goes wrong with Google Maps";
+    mapDiv.appendChild(errorDiv);
+
+    sideDiv = document.getElementById("side-bar");
+    sideDiv.innerHTML = '';
 }
 
 // list the location title for side bar
