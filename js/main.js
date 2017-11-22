@@ -50,7 +50,9 @@ function initMap() {
         // });
 
         marker.addListener('click', function() {
-            wikiInfo(this, largeInfowindow);    
+            wikiInfo(this, largeInfowindow); 
+            // add debounce animation to maker when click
+            toggleBounce(this);
         });
 
         // two listener for changing the marker icon color
@@ -65,6 +67,19 @@ function initMap() {
     } 
 ko.applyBindings(new ViewModel());
 };
+
+// marker bounce animation
+function toggleBounce(marker) {
+    if (this.marker.getAnimation() != null) {
+        marker.setAnimation(null);
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+
+    setTimeout(function() {
+        marker.setAnimation(null)
+    }, 3000);
+}
 
 // wiki info
 function wikiInfo(marker, infowindow) {
@@ -161,6 +176,7 @@ function makeMarkerIcon(markerColor) {
 
     return markerImage;
 }
+
 
 
 // google map error handling
